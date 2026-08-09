@@ -31,7 +31,7 @@ export default function Login(){
             if(error.response){
                 setErrorMessage(error.response.data.message);
             } else {
-                setErrorMessage('error sur serve')
+                setErrorMessage("Erreur lors de la déconnexion:")
             }
         }
     };

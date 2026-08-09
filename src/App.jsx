@@ -4,6 +4,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import StudentDashboard from './pages/StudentDashboard';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
+import AddEvent from './pages/CreateEvent';
 
 function App() {
   return (
@@ -16,6 +17,10 @@ function App() {
         <Route path="/admin/dashboard" 
         element={<ProtectedRoute allowedRole="admin">
           <AdminDashboard />
+          </ProtectedRoute> } />
+            <Route path="/admin/addevents" 
+        element={<ProtectedRoute allowedRole="admin">
+          <AddEvent />
           </ProtectedRoute> } />
         <Route path="/student/dashboard" 
         element={ <ProtectedRoute allowedRole="student">

@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../api/axios';
+import Login from '../pages/Login';
 
 export default function Navbar() {
     const navigate = useNavigate();
@@ -36,14 +37,19 @@ export default function Navbar() {
                         )
                     ) : null}
                     
-                   {user && (
+                   {user ? (
                         <button 
                             onClick={handleLogout} 
                             className="bg-red-500 px-4 py-1 rounded hover:bg-red-600 transition"
                         >
                             Déconnexion
                         </button>
-                    )}
+                    ) :    <button 
+                            onClick={Login} 
+                            className="bg-red-500 px-4 py-1 rounded hover:bg-red-600 transition"
+                        >
+                            Login
+                        </button>}
                 </div>
             </div>
         </nav>
