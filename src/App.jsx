@@ -1,14 +1,14 @@
-function App() {
-  return (
-    <div className="flex h-screen items-center justify-center bg-gray-100">
-      <div className="p-8 bg-white rounded-lg shadow-md text-center">
-        <h1 className="text-3xl font-bold text-blue-600 mb-4">
-          BDE Events - React & Laravel
-        </h1>
-        <p className="text-gray-600">Tailwind CSS خدام مزيان!</p>
-      </div>
-    </div>
+import { BrowserRouter as Router , Routes , Route } from "react-router-dom";
+import Login from "./pages/Login";
+
+function App(){
+  return(
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />}/>
+      </Routes>
+    </Router>
   )
 }
 
-export default App
+export default App;
