@@ -39,7 +39,7 @@ export default function Login(){
         <div className="flex h-screen items-center justify-center bg-gray-100">
             <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
                 <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-Connexion</h2>
+                    Connexion</h2>
                 
                {errorMessage && (
                     <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-center">
