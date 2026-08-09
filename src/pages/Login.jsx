@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axios";
 
 export default function Login(){
     const [email, setEmail]=useState('');
     const [password, setPassword]=useState('');
     const [errorMessage, setErrorMessage]=useState('');
+    const navigate = useNavigate();
     const handleLogin = async(e)=>{
         e.preventDefault();
         setErrorMessage('');
@@ -13,8 +15,17 @@ export default function Login(){
                 email : email ,
                 password : password
             });
-            localStorage.setItem('token', response.data.token);
-            alert ('success');
+            const token = response.data.token;
+            const user = response.data.user;
+
+            localStorage.setItem('token', token);
+            localStorage.setItem('user',JSON.stringify(user));
+            if(user.role ==='admin'){
+                navigate('/admin/dashboard');
+            }else{
+                navigate('/student/dashboard');
+            }
+           
         }
         catch(error){
             if(error.response){
