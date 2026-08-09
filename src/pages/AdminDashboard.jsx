@@ -40,8 +40,8 @@ export default function AdminDashboard(){
 
          <table className="min-w-full divide-y divide-gray-200 mt-4">
                 <tbody className="bg-white divide-y divide-gray-200">
-                        {events.map((e, index) => (
-                        <tr key={index} className="hover:bg-gray-50 transition duration-150">
+                        {events.map((e) => (
+                        <tr key={e.id} className="hover:bg-gray-50 transition duration-150">
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="font-bold text-gray-900">{ e.titre }</div>
                                  <div className={`text-sm font-medium ${e.prix > 0 ? 'text-amber-600' : 'text-green-600'}`}>
