@@ -5,6 +5,7 @@ import StudentDashboard from './pages/StudentDashboard';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import AddEvent from './pages/CreateEvent';
+import Tickets from './pages/Ticket';
 
 function App() {
   return (
@@ -25,6 +26,12 @@ function App() {
         <Route path="/student/dashboard" 
         element={ <ProtectedRoute allowedRole="student">
           <StudentDashboard />
+          
+        </ProtectedRoute> } />
+            <Route path="/student/ticket" 
+        element={ <ProtectedRoute allowedRole="student">
+          <Tickets />
+          
         </ProtectedRoute> } />
       </Routes>
     </Router>

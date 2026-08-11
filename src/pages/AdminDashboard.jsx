@@ -21,7 +21,7 @@ export default function AdminDashboard(){
     }
 
     useEffect(() => {
-        getevents();
+       getevents();
     }, []);
 
     return (

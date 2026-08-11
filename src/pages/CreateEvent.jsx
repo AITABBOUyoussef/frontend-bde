@@ -17,7 +17,7 @@ export default function AddEvent(){
         e.preventDefault();
         setErrorMessage('');
         try{
-            const response = await axiosInstance.post('/add-event', {
+        const response =     await axiosInstance.post('/add-event', {
                 titre : titre ,
                 description : description ,
                 date : date ,
@@ -54,18 +54,18 @@ export default function AddEvent(){
     {/* Titre */}
     <input type="text"    value={titre}
                             onChange={(e) => setTitre(e.target.value)}
-                            required placeholder="Titre de l'événement" required maxLength={255} />
+                            required placeholder="Titre de l'événement"  maxLength={255} />
     
     {/* Description */}
     <textarea placeholder="Description"     value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            requiredrequired rows="4"></textarea>
+                           required rows="4"></textarea>
     
     {/* Date */}
     <input 
         type="date"     value={date}
                             onChange={(e) => setDate(e.target.value)}
-                            required
+                           
         required 
         min={new Date().toISOString().split('T')[0]} 
     />
@@ -73,22 +73,22 @@ export default function AddEvent(){
     {/* Heure */}
     <input type="time"   value={heure}
                             onChange={(e) => setHeure(e.target.value)}
-                            required required />
+                            reqired required />
     
     {/* Lieu */}
     <input type="text"    value={lieu}
                             onChange={(e) => setLieu(e.target.value)}
-                            required placeholder="Lieu" required maxLength={255} />
+                             placeholder="Lieu" required maxLength={255} />
     
     {/* Prix */}
     <input type="number"    value={prix}
                             onChange={(e) => setPrix(e.target.value)}
-                            required placeholder="Prix" required min="0" step="0.1" />
+                             placeholder="Prix" required min="0" step="0.1" />
     
     {/* Jauge Maximale (Capacité) */}
     <input type="number"    value={jaugemaximale}
                             onChange={(e) => setJaugemaximalen(e.target.value)}
-                            required placeholder="Capacité maximale" required min="1" step="1" />
+                             placeholder="Capacité maximale" required min="1" step="1" />
 
     <button type="submit">Ajouter l'événement</button>
 

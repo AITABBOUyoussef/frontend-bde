@@ -33,7 +33,10 @@ export default function Navbar() {
                         user.role === 'admin' ? (
                             <Link to="/admin/dashboard" className="hover:underline">Tableau de bord</Link>
                         ) : (
-                            <Link to="/student/dashboard" className="hover:underline">Mes billets</Link>
+                            <div className='gap-5 flex '>
+                            <Link to="/student/dashboard" className="hover:underline">Home </Link>
+                            <Link to="/student/ticket" className="hover:underline">Mes billets</Link>
+                           </div>
                         )
                     ) : null}
                     

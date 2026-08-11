@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
+import Tickets from "./Ticket";
+import { useNavigate } from "react-router-dom";
 
 export default function StudentDashboard(){
+    const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem('user'));
     const [reservations , setReservations] = useState([]);
+    // const [response , setResponse] = useState([]);
     const[errorMessage, setErrorMessage]=useState("");
     const getReservations = async ()=>{
         try {
+            
             const result = await axiosInstance.get('/reservations');
             setReservations(result.data.data);
         }catch (error) {
@@ -16,8 +22,28 @@ export default function StudentDashboard(){
             }
         }
     }
+    const reserve= async(id)=>{
+        try {
+            setErrorMessage("");
+  await axiosInstance.post('/reserv' , {
+            event_id : id
+        });
+       getReservations();
+           
+           } catch(error){
+            if(error.response){
+                setErrorMessage(error.response.data.message);
+            } else {
+                setErrorMessage('error sur serve')
+            }
+        }
+    };
+    const toTickets = () => {
+        navigate('/student/ticket');
+    };
     useEffect(()=>{
         getReservations();
+       
     }, []);
    return (
         <div>
@@ -64,6 +90,49 @@ export default function StudentDashboard(){
                                     </div>
                                     <span>{e.lieu}</span>
                                 </div>
+                                <div className="p-6 pt-0 mt-auto">
+    {e.event_id === e.id && e.reserveBy === user.id ? (
+        
+       <button 
+            type="button"
+            onClick={() => toTickets()} 
+            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-md transition-all duration-300 flex items-center justify-center gap-2"
+        >
+            <span>Voir mon ticket</span>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path>
+            </svg>
+        </button>
+
+    ) : e.jauge_maximale <= 0 ? (
+        
+         <button 
+            type="button" 
+            disabled
+            className="w-full bg-gray-100 text-gray-400 border border-gray-200 font-bold py-3 px-4 rounded-xl cursor-not-allowed flex items-center justify-center gap-2"
+        >
+            <span>Événement complet</span>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            </svg>
+        </button>
+
+    ) : (
+        
+        <button 
+            type="button"
+            onClick={() => reserve(e.id)} 
+            className="w-full bg-green-50 text-green-700 border border-green-200 hover:bg-green-600 hover:text-white hover:border-green-600 font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
+        >
+            <span>Réserver ma place</span>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+        </button>
+
+    )}
+</div>
+                       
                             </div>
                         </div>
                     </div>
