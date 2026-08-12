@@ -1,0 +1,10 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: react_frontend
+    restart: unless-stopped
+    ports:
+      # Ghadi nrbtouh b port 5173 f pc dyalk bach maytdarbch m3a Nginx dyal Laravel li chaded 80
+      - "5173:80"

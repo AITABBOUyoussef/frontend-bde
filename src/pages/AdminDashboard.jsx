@@ -5,16 +5,13 @@ import axiosInstance from "../api/axios";
 export default function AdminDashboard() {
     const [events, setEvents] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
-    
-    // 1. زدنا حالة التحميل باش نديرو الـ Animation
+   
     const [isLoading, setIsLoading] = useState(true);
 
-    // 2. قادينا useEffect باش ميبقاش يطلع الخطأ الصفر فـ Console
-    useEffect(() => {
+        useEffect(() => {
         const getevents = async () => {
             try {
-                // كنبداو التحميل
-                setIsLoading(true);
+                 setIsLoading(true);
                 
                 const result = await axiosInstance.get('/events');
                 setEvents(result.data.data); 
@@ -25,7 +22,6 @@ export default function AdminDashboard() {
                     setErrorMessage("Erreur de connexion avec le serveur");
                 }
             } finally {
-                // كنساليو التحميل
                 setIsLoading(false);
             }
         };
@@ -33,7 +29,6 @@ export default function AdminDashboard() {
         getevents();
     }, []);
 
-    // 3. شاشة التحميل الاحترافية
     if (isLoading) {
         return (
             <div className="min-h-screen flex flex-col justify-center items-center bg-slate-50">
@@ -48,14 +43,10 @@ export default function AdminDashboard() {
             </div>
         );
     }
-
-    // 4. الواجهة الرئيسية (Admin Dashboard)
-    return (
+  return (
         <div className="min-h-screen bg-slate-50 py-10 font-sans">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                
-                {/* Header Section */}
-                <div className="flex flex-col md:flex-row justify-between items-center bg-white p-6 rounded-3xl shadow-sm border border-gray-100 mb-8 gap-4">
+              <div className="flex flex-col md:flex-row justify-between items-center bg-white p-6 rounded-3xl shadow-sm border border-gray-100 mb-8 gap-4">
                     <div className="flex items-center gap-4">
                         <div className="w-14 h-14 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center shadow-inner">
                             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,8 +58,6 @@ export default function AdminDashboard() {
                             <p className="text-sm text-gray-500 font-medium">Gérez tous les événements de la plateforme</p>
                         </div>
                     </div>
-                    
-                    {/* بوطونة الإضافة */}
                     <Link 
                         to="/admin/addevents" 
                         className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-md hover:shadow-red-500/30 transition-all duration-300 flex items-center gap-2 transform hover:-translate-y-0.5"
@@ -79,9 +68,7 @@ export default function AdminDashboard() {
                         <span>Créer un événement</span>
                     </Link>
                 </div>
-
-                {/* Error Message */}
-                {errorMessage && (
+          {errorMessage && (
                     <div className="mb-8 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl shadow-sm flex items-start">
                         <svg className="w-5 h-5 text-red-500 mt-0.5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -90,12 +77,10 @@ export default function AdminDashboard() {
                     </div>
                 )}
 
-                {/* Table Container */}
-                <div className="bg-white rounded-[2rem] shadow-md border border-gray-100 overflow-hidden">
+              <div className="bg-white rounded-[2rem] shadow-md border border-gray-100 overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
-                            {/* عناوين الطابلو */}
-                            <thead className="bg-gray-50">
+                             <thead className="bg-gray-50">
                                 <tr>
                                     <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
                                         Événement & Prix
@@ -108,14 +93,11 @@ export default function AdminDashboard() {
                                     </th>
                                 </tr>
                             </thead>
-                            
-                            {/* محتوى الطابلو */}
-                            <tbody className="bg-white divide-y divide-gray-100">
+                          
+                           <tbody className="bg-white divide-y divide-gray-100">
                                 {events.length > 0 ? (
                                     events.map((e) => (
                                         <tr key={e.id} className="hover:bg-slate-50 transition-colors duration-200">
-                                            
-                                            {/* Column 1: Titre & Prix */}
                                             <td className="px-6 py-5 whitespace-nowrap">
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
@@ -131,9 +113,7 @@ export default function AdminDashboard() {
                                                     </div>
                                                 </div>
                                             </td>
-                                            
-                                            {/* Column 2: Date & Lieu */}
-                                            <td className="px-6 py-5 whitespace-nowrap">
+                                              <td className="px-6 py-5 whitespace-nowrap">
                                                 <div className="text-sm font-bold text-gray-900 mb-1">
                                                     {e.date} à {e.heure}
                                                 </div>
@@ -145,9 +125,7 @@ export default function AdminDashboard() {
                                                     {e.lieu}
                                                 </div>
                                             </td>
-                                            
-                                            {/* Column 3: Jauge */}
-                                            <td className="px-6 py-5 whitespace-nowrap text-center">
+                                             <td className="px-6 py-5 whitespace-nowrap text-center">
                                                 <span className="px-4 py-2 inline-flex items-center gap-1.5 text-xs leading-5 font-bold rounded-full bg-blue-50 text-blue-700 border border-blue-100">
                                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
@@ -158,8 +136,7 @@ export default function AdminDashboard() {
                                         </tr>
                                     ))
                                 ) : (
-                                    /* Empty State ديال الطابلو */
-                                    <tr>
+                                       <tr>
                                         <td colSpan="3" className="px-6 py-12 text-center text-gray-500">
                                             <div className="flex flex-col items-center justify-center">
                                                 <svg className="w-12 h-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

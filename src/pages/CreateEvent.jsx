@@ -40,9 +40,7 @@ export default function AddEvent() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
             <div className="max-w-2xl w-full bg-white rounded-[2rem] shadow-xl border border-gray-100 p-8 sm:p-12 transform transition-all">
-                
-                {/* Header Section */}
-                <div className="text-center mb-10">
+            <div className="text-center mb-10">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 mb-4 shadow-sm">
                         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -55,9 +53,7 @@ export default function AddEvent() {
                         Remplissez les détails ci-dessous pour ajouter un événement à votre catalogue.
                     </p>
                 </div>
-
-                {/* Error Message */}
-                {errorMessage && (
+           {errorMessage && (
                     <div className="mb-8 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl shadow-sm flex items-start">
                         <svg className="w-5 h-5 text-red-500 mt-0.5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -66,11 +62,9 @@ export default function AddEvent() {
                     </div>
                 )}
 
-                {/* Form */}
                 <form onSubmit={handleAddEvent} className="space-y-6">
                     
-                    {/* Titre */}
-                    <div>
+                   <div>
                         <label className="block text-sm font-bold text-gray-700 mb-2">Titre de l'événement <span className="text-red-500">*</span></label>
                         <input 
                             type="text" 
@@ -83,7 +77,6 @@ export default function AddEvent() {
                         />
                     </div>
 
-                    {/* Description */}
                     <div>
                         <label className="block text-sm font-bold text-gray-700 mb-2">Description <span className="text-red-500">*</span></label>
                         <textarea 
@@ -96,7 +89,6 @@ export default function AddEvent() {
                         ></textarea>
                     </div>
 
-                    {/* Grid: Date & Heure */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className="block text-sm font-bold text-gray-700 mb-2">Date <span className="text-red-500">*</span></label>
@@ -120,9 +112,7 @@ export default function AddEvent() {
                             />
                         </div>
                     </div>
-
-                    {/* Lieu */}
-                    <div>
+                  <div>
                         <label className="block text-sm font-bold text-gray-700 mb-2">Lieu <span className="text-red-500">*</span></label>
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -142,9 +132,7 @@ export default function AddEvent() {
                             />
                         </div>
                     </div>
-
-                    {/* Grid: Prix & Jauge */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className="block text-sm font-bold text-gray-700 mb-2">Prix (DH) <span className="text-red-500">*</span></label>
                             <input 
@@ -172,20 +160,16 @@ export default function AddEvent() {
                             />
                         </div>
                     </div>
-
-                    {/* Submit & Cancel Buttons (مجموعة بالـ Flex) */}
-                    <div className="pt-4 flex flex-col sm:flex-row gap-4">
+                  <div className="pt-4 flex flex-col sm:flex-row gap-4">
                         
-                        {/* بوطونة الإلغاء (Annuler) */}
                         <button 
                             type="button" 
-                            onClick={() => navigate('/admin/dashboard')} // كترجعك للـ Dashboard
+                            onClick={() => navigate('/admin/dashboard')} 
                             className="w-full sm:w-1/3 bg-white border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700 font-bold py-4 px-6 rounded-xl transition-all duration-200 flex justify-center items-center gap-2"
                         >
                             <span>Annuler</span>
                         </button>
 
-                        {/* بوطونة الإضافة */}
                         <button 
                             type="submit" 
                             className="w-full sm:w-2/3 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-emerald-500/30 transform hover:-translate-y-0.5 transition-all duration-200 flex justify-center items-center gap-2"

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom"; // زدت هادي باش ما يطيحش ليك الكود
+import { Link } from "react-router-dom"; 
 import axiosInstance from "../api/axios";
 
 export default function Tickets() {
@@ -29,9 +29,7 @@ export default function Tickets() {
     const formatTime = (timeString) => {
         return timeString ? timeString.substring(0, 5) : '';
     };
-
-    // 1. Loading Animation احترافية
-    if (isLoading) {
+     if (isLoading) {
         return (
             <div className="min-h-screen flex flex-col justify-center items-center bg-slate-50">
                 <div className="relative flex justify-center items-center">
@@ -45,14 +43,11 @@ export default function Tickets() {
             </div>
         );
     }
-
-    // 2. الواجهة الرئيسية
-    return (
+ return (
         <div className="py-12 bg-slate-50 min-h-screen font-sans">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
-                {/* Header Section */}
-                <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
+               <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
                     <div>
                         <h2 className="font-extrabold text-3xl md:text-4xl text-gray-900 leading-tight flex items-center gap-3 mb-2">
                             <span className="text-4xl drop-shadow-md">🎟️</span> Mes Billets
@@ -70,15 +65,13 @@ export default function Tickets() {
                     </div>
                 </div>
 
-                {/* Grid ديال les Tickets */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {tickets.length > 0 ? (
                         tickets.map((reservation) => (
                             <div key={reservation.id} className="bg-white rounded-[2rem] shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col justify-between transform hover:-translate-y-2 border border-gray-100 relative group">
                                 
-                                {/* Header ديال l-Ticket بـ Gradient */}
                                 <div className="bg-gradient-to-br from-emerald-500 to-green-700 px-8 py-6 text-white flex justify-between items-start relative overflow-hidden">
-                                    {/* ديكورات فالخلفية ديال التيكي */}
+                                
                                     <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-10 -mt-10 transform group-hover:scale-150 transition-transform duration-700"></div>
                                     
                                     <div className="relative z-10 w-full">
@@ -95,9 +88,7 @@ export default function Tickets() {
                                         </h4>
                                     </div>
                                 </div>
-
-                                {/* Details ديال l-Event */}
-                                <div className="px-8 py-6 space-y-4 text-sm font-medium text-gray-700 bg-white">
+                              <div className="px-8 py-6 space-y-4 text-sm font-medium text-gray-700 bg-white">
                                     <div className="flex items-center gap-4">
                                         <div className="bg-emerald-50 p-2.5 rounded-xl text-emerald-600">
                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -125,17 +116,13 @@ export default function Tickets() {
                                         </div>
                                     </div>
                                 </div>
-
-                                {/* Separateur واقعي بحال ورقة مقطوعة */}
-                                <div className="relative flex items-center px-4 bg-white">
-                                    {/* هاد الجوج دوائر كيعطيو داك الديكور ديال التيكي مقطوع من الجناب */}
-                                    <div className="h-8 w-8 bg-slate-50 rounded-full absolute -left-4 shadow-inner border-r border-gray-100 z-10"></div>
+     <div className="relative flex items-center px-4 bg-white">  
+                                     <div className="h-8 w-8 bg-slate-50 rounded-full absolute -left-4 shadow-inner border-r border-gray-100 z-10"></div>
                                     <div className="h-8 w-8 bg-slate-50 rounded-full absolute -right-4 shadow-inner border-l border-gray-100 z-10"></div>
                                     <div className="w-full border-t-2 border-dashed border-gray-200"></div>
                                 </div>
 
-                                {/* Footer ديال l-Ticket (Code unique) */}
-                                <div className="bg-white px-8 py-6 text-center">
+                              <div className="bg-white px-8 py-6 text-center">
                                     <p className="text-[11px] text-gray-400 font-bold uppercase tracking-widest mb-3">
                                         Code de Réservation
                                     </p>
@@ -152,7 +139,7 @@ export default function Tickets() {
                             </div>
                         ))
                     ) : (
-                        /* Empty State أنيق بزاف */
+
                         <div className="col-span-1 md:col-span-2 lg:col-span-3 bg-white rounded-3xl shadow-sm border border-gray-100 p-16 text-center flex flex-col items-center justify-center">
                             <div className="relative mb-6">
                                 <div className="absolute inset-0 bg-emerald-100 rounded-full blur-xl opacity-50 animate-pulse"></div>

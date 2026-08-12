@@ -8,8 +8,7 @@ export default function StudentDashboard() {
     
     const [reservations, setReservations] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
-    
-    // 1. زدنا حالة التحميل (Loading State)
+  
     const [isLoading, setIsLoading] = useState(true);
 
     const getReservations = async () => {
@@ -23,8 +22,7 @@ export default function StudentDashboard() {
                 setErrorMessage("Erreur de connexion avec le serveur");
             }
         } finally {
-            // كنساليو التحميل ملي كتجي الداتا (أو كيوقع خطأ)
-            setIsLoading(false);
+              setIsLoading(false);
         }
     }
 
@@ -52,7 +50,6 @@ export default function StudentDashboard() {
         getReservations();
     }, []);
 
-    // 2. واجهة التحميل الاحترافية (Loading Animation)
     if (isLoading) {
         return (
             <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50">
@@ -67,12 +64,10 @@ export default function StudentDashboard() {
         );
     }
 
-    // 3. الواجهة الرئيسية بالديزاين الجديد
     return (
         <div className="min-h-screen bg-gray-50 pb-12">
             
-            {/* Header احترافي بـ Gradient */}
-            <div className="bg-gradient-to-r from-green-600 to-emerald-800 py-16 px-8 text-center shadow-lg rounded-b-[3rem] mb-10">
+             <div className="bg-gradient-to-r from-green-600 to-emerald-800 py-16 px-8 text-center shadow-lg rounded-b-[3rem] mb-10">
                 <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
                     Bienvenue dans votre Espace
                 </h1>
@@ -80,9 +75,7 @@ export default function StudentDashboard() {
                     Découvrez nos prochains événements et réservez votre place en un seul clic.
                 </p>
             </div>
-
-            {/* رسالة الخطأ */}
-            {errorMessage && (
+     {errorMessage && (
                 <div className="max-w-3xl mx-auto mb-8 px-4">
                     <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg shadow-sm flex items-center">
                         <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,9 +85,7 @@ export default function StudentDashboard() {
                     </div>
                 </div>
             )}
-
-            {/* الحاوية ديال الكارطات */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {reservations.map((e) => (
                         <div key={e.id} className="bg-white rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden group flex flex-col relative transform hover:-translate-y-1">
@@ -135,8 +126,7 @@ export default function StudentDashboard() {
                             </div>
 
                             <div className="p-6 pt-0 mt-auto">
-                                {/* ضفنا ? لـ user باش نحميو الكود من الـ Crash إيلا كان LocalStorage خاوي */}
-                                {e.event_id === e.id && e.reserveBy === user?.id ? (
+                                  {e.event_id === e.id && e.reserveBy === user?.id ? (
                                     <button 
                                         type="button"
                                         onClick={() => toTickets()} 

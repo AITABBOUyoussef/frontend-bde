@@ -32,8 +32,7 @@ export default function Login() {
             if (error.response) {
                 setErrorMessage(error.response.data.message);
             } else {
-                // صلحت هاد الكلمة كانت déconnexion
-                setErrorMessage("Erreur de connexion avec le serveur."); 
+                 setErrorMessage("Erreur de connexion avec le serveur."); 
             }
         }
     };
@@ -42,7 +41,6 @@ export default function Login() {
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 via-slate-50 to-gray-100 font-sans py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full">
                 
-                {/* Logo / Header Section */}
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white shadow-md mb-4 border border-emerald-100">
                         <span className="text-4xl">🎟️</span>
@@ -55,10 +53,8 @@ export default function Login() {
                     </p>
                 </div>
 
-                {/* Form Container */}
                 <div className="bg-white py-10 px-8 shadow-2xl rounded-[2.5rem] border border-gray-100 transform transition-all">
                     
-                    {/* Error Message */}
                     {errorMessage && (
                         <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl shadow-sm flex items-start animate-pulse">
                             <svg className="w-5 h-5 text-red-500 mt-0.5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -70,8 +66,7 @@ export default function Login() {
 
                     <form onSubmit={handleLogin} className="space-y-6">
                         
-                        {/* Email Input */}
-                        <div>
+                         <div>
                             <label className="block text-sm font-bold text-gray-700 mb-2">Adresse Email</label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -90,7 +85,6 @@ export default function Login() {
                             </div>
                         </div>
                         
-                        {/* Password Input */}
                         <div>
                             <label className="block text-sm font-bold text-gray-700 mb-2">Mot de passe</label>
                             <div className="relative">
@@ -110,7 +104,6 @@ export default function Login() {
                             </div>
                         </div>
 
-                        {/* Login Button */}
                         <div className="pt-2">
                             <button 
                                 type="submit" 
@@ -126,7 +119,6 @@ export default function Login() {
                     </form>
                 </div>
                 
-                {/* Footer simple */}
                 <p className="text-center text-sm text-gray-500 mt-8">
                     &copy; 2026 BDE Events. Tous droits réservés.
                 </p>
