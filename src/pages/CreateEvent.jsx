@@ -1,6 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axios";
+import { 
+    CalendarPlus, 
+    Type, 
+    AlignLeft, 
+    CalendarDays, 
+    Clock, 
+    MapPin, 
+    Coins, 
+    Users, 
+    AlertTriangle,
+    ArrowLeft,
+    CheckCircle2
+} from "lucide-react";
 
 export default function AddEvent() {
     const navigate = useNavigate();
@@ -38,88 +51,120 @@ export default function AddEvent() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
-            <div className="max-w-2xl w-full bg-white rounded-[2rem] shadow-xl border border-gray-100 p-8 sm:p-12 transform transition-all">
-            <div className="text-center mb-10">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 mb-4 shadow-sm">
-                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg>
+        <div className="relative min-h-screen flex items-center justify-center bg-slate-50/50 py-12 px-4 sm:px-6 lg:px-8 font-sans overflow-hidden">
+            
+            {/* Background Premium Blob */}
+            <div className="absolute top-0 -left-20 w-[30rem] h-[30rem] bg-amber-100 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse pointer-events-none z-0" style={{ animationDuration: '10s' }}></div>
+            <div className="absolute bottom-0 -right-20 w-[30rem] h-[30rem] bg-slate-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse pointer-events-none z-0" style={{ animationDuration: '12s', animationDelay: '2s' }}></div>
+
+            {/* Main Form Card */}
+            <div className="relative z-10 max-w-3xl w-full bg-white/90 backdrop-blur-xl rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-white p-8 sm:p-12 animate-fade-in-up">
+                
+                {/* Header Section */}
+                <div className="text-center mb-10">
+                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-slate-900 text-amber-400 mb-5 shadow-lg transform hover:scale-105 transition-transform duration-300">
+                        <CalendarPlus className="w-10 h-10" strokeWidth={1.5} />
                     </div>
-                    <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
-                        Créer un Nouvel Événement
+                    <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                        Créer un Événement
                     </h2>
-                    <p className="mt-3 text-sm text-gray-500 font-medium">
-                        Remplissez les détails ci-dessous pour ajouter un événement à votre catalogue.
+                    <p className="mt-3 text-base text-slate-500 font-medium">
+                        Remplissez les détails ci-dessous pour ajouter un nouvel événement à votre catalogue.
                     </p>
                 </div>
-           {errorMessage && (
-                    <div className="mb-8 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl shadow-sm flex items-start">
-                        <svg className="w-5 h-5 text-red-500 mt-0.5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span className="text-red-700 font-medium text-sm">{errorMessage}</span>
+
+                {/* Error Message */}
+                {errorMessage && (
+                    <div className="mb-8 bg-red-50 border border-red-100 p-5 rounded-2xl shadow-sm flex items-start gap-4 animate-headshake">
+                        <AlertTriangle className="w-6 h-6 text-red-500 mt-0.5 shrink-0" strokeWidth={2} />
+                        <div>
+                            <p className="font-bold text-red-800 text-sm mb-0.5">Oups !</p>
+                            <span className="text-red-700 font-medium text-sm">{errorMessage}</span>
+                        </div>
                     </div>
                 )}
 
-                <form onSubmit={handleAddEvent} className="space-y-6">
+                {/* Form */}
+                <form onSubmit={handleAddEvent} className="space-y-7">
                     
-                   <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Titre de l'événement <span className="text-red-500">*</span></label>
-                        <input 
-                            type="text" 
-                            value={titre}
-                            onChange={(e) => setTitre(e.target.value)}
-                            required 
-                            placeholder="Ex: Soirée d'intégration BDE" 
-                            maxLength={255} 
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 outline-none text-gray-800"
-                        />
-                    </div>
-
+                    {/* Titre */}
                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Description <span className="text-red-500">*</span></label>
-                        <textarea 
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            required 
-                            rows="4"
-                            placeholder="Décrivez l'événement en quelques mots..."
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 outline-none text-gray-800 resize-none"
-                        ></textarea>
+                        <label className="block text-sm font-bold text-slate-700 mb-2.5">Titre de l'événement <span className="text-red-500">*</span></label>
+                        <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-4.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-amber-500 transition-colors">
+                                <Type className="h-5.5 w-5.5" strokeWidth={2} />
+                            </div>
+                            <input 
+                                type="text" 
+                                value={titre}
+                                onChange={(e) => setTitre(e.target.value)}
+                                required 
+                                placeholder="Ex: Soirée de Gala 2026" 
+                                maxLength={255} 
+                                className="w-full pl-12 pr-4.5 py-4 rounded-2xl border-2 border-slate-100 bg-slate-50/50 focus:bg-white focus:ring-4 focus:ring-amber-100/50 focus:border-amber-400 transition-all duration-200 outline-none text-slate-900 font-medium placeholder-slate-400"
+                            />
+                        </div>
                     </div>
 
+                    {/* Description */}
+                    <div>
+                        <label className="block text-sm font-bold text-slate-700 mb-2.5">Description <span className="text-red-500">*</span></label>
+                        <div className="relative group">
+                            <div className="absolute top-4 left-0 pl-4.5 flex items-start pointer-events-none text-slate-400 group-focus-within:text-amber-500 transition-colors">
+                                <AlignLeft className="h-5.5 w-5.5" strokeWidth={2} />
+                            </div>
+                            <textarea 
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                required 
+                                rows="4"
+                                placeholder="Décrivez l'événement en quelques mots..."
+                                className="w-full pl-12 pr-4.5 py-4 rounded-2xl border-2 border-slate-100 bg-slate-50/50 focus:bg-white focus:ring-4 focus:ring-amber-100/50 focus:border-amber-400 transition-all duration-200 outline-none text-slate-900 font-medium placeholder-slate-400 resize-none"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    {/* Date & Heure */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-2">Date <span className="text-red-500">*</span></label>
-                            <input 
-                                type="date" 
-                                value={date}
-                                onChange={(e) => setDate(e.target.value)}
-                                required 
-                                min={new Date().toISOString().split('T')[0]} 
-                                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 outline-none text-gray-800 cursor-pointer"
-                            />
+                            <label className="block text-sm font-bold text-slate-700 mb-2.5">Date <span className="text-red-500">*</span></label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-4.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-amber-500 transition-colors">
+                                    <CalendarDays className="h-5.5 w-5.5" strokeWidth={2} />
+                                </div>
+                                <input 
+                                    type="date" 
+                                    value={date}
+                                    onChange={(e) => setDate(e.target.value)}
+                                    required 
+                                    min={new Date().toISOString().split('T')[0]} 
+                                    className="w-full pl-12 pr-4.5 py-4 rounded-2xl border-2 border-slate-100 bg-slate-50/50 focus:bg-white focus:ring-4 focus:ring-amber-100/50 focus:border-amber-400 transition-all duration-200 outline-none text-slate-900 font-medium cursor-pointer"
+                                />
+                            </div>
                         </div>
                         <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-2">Heure <span className="text-red-500">*</span></label>
-                            <input 
-                                type="time" 
-                                value={heure}
-                                onChange={(e) => setHeure(e.target.value)}
-                                required 
-                                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 outline-none text-gray-800 cursor-pointer"
-                            />
+                            <label className="block text-sm font-bold text-slate-700 mb-2.5">Heure <span className="text-red-500">*</span></label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-4.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-amber-500 transition-colors">
+                                    <Clock className="h-5.5 w-5.5" strokeWidth={2} />
+                                </div>
+                                <input 
+                                    type="time" 
+                                    value={heure}
+                                    onChange={(e) => setHeure(e.target.value)}
+                                    required 
+                                    className="w-full pl-12 pr-4.5 py-4 rounded-2xl border-2 border-slate-100 bg-slate-50/50 focus:bg-white focus:ring-4 focus:ring-amber-100/50 focus:border-amber-400 transition-all duration-200 outline-none text-slate-900 font-medium cursor-pointer"
+                                />
+                            </div>
                         </div>
                     </div>
-                  <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Lieu <span className="text-red-500">*</span></label>
-                        <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
+
+                    {/* Lieu */}
+                    <div>
+                        <label className="block text-sm font-bold text-slate-700 mb-2.5">Lieu <span className="text-red-500">*</span></label>
+                        <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-4.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-amber-500 transition-colors">
+                                <MapPin className="h-5.5 w-5.5" strokeWidth={2} />
                             </div>
                             <input 
                                 type="text" 
@@ -128,58 +173,69 @@ export default function AddEvent() {
                                 required 
                                 placeholder="Ex: Amphi A, Campus Principal" 
                                 maxLength={255} 
-                                className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 outline-none text-gray-800"
+                                className="w-full pl-12 pr-4.5 py-4 rounded-2xl border-2 border-slate-100 bg-slate-50/50 focus:bg-white focus:ring-4 focus:ring-amber-100/50 focus:border-amber-400 transition-all duration-200 outline-none text-slate-900 font-medium placeholder-slate-400"
                             />
                         </div>
                     </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    {/* Prix & Capacité */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-2">Prix (DH) <span className="text-red-500">*</span></label>
-                            <input 
-                                type="number" 
-                                value={prix}
-                                onChange={(e) => setPrix(e.target.value)}
-                                required 
-                                placeholder="0.00" 
-                                min="0" 
-                                step="0.1" 
-                                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 outline-none text-gray-800"
-                            />
+                            <label className="block text-sm font-bold text-slate-700 mb-2.5">Prix (DH) <span className="text-red-500">*</span></label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-4.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-amber-500 transition-colors">
+                                    <Coins className="h-5.5 w-5.5" strokeWidth={2} />
+                                </div>
+                                <input 
+                                    type="number" 
+                                    value={prix}
+                                    onChange={(e) => setPrix(e.target.value)}
+                                    required 
+                                    placeholder="0.00 (Mettre 0 si gratuit)" 
+                                    min="0" 
+                                    step="0.1" 
+                                    className="w-full pl-12 pr-4.5 py-4 rounded-2xl border-2 border-slate-100 bg-slate-50/50 focus:bg-white focus:ring-4 focus:ring-amber-100/50 focus:border-amber-400 transition-all duration-200 outline-none text-slate-900 font-medium placeholder-slate-400"
+                                />
+                            </div>
                         </div>
                         <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-2">Capacité Max <span className="text-red-500">*</span></label>
-                            <input 
-                                type="number" 
-                                value={jaugemaximale}
-                                onChange={(e) => setJaugemaximalen(e.target.value)}
-                                required 
-                                placeholder="Ex: 100" 
-                                min="1" 
-                                step="1" 
-                                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 outline-none text-gray-800"
-                            />
+                            <label className="block text-sm font-bold text-slate-700 mb-2.5">Capacité Max <span className="text-red-500">*</span></label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-4.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-amber-500 transition-colors">
+                                    <Users className="h-5.5 w-5.5" strokeWidth={2} />
+                                </div>
+                                <input 
+                                    type="number" 
+                                    value={jaugemaximale}
+                                    onChange={(e) => setJaugemaximalen(e.target.value)}
+                                    required 
+                                    placeholder="Ex: 100" 
+                                    min="1" 
+                                    step="1" 
+                                    className="w-full pl-12 pr-4.5 py-4 rounded-2xl border-2 border-slate-100 bg-slate-50/50 focus:bg-white focus:ring-4 focus:ring-amber-100/50 focus:border-amber-400 transition-all duration-200 outline-none text-slate-900 font-medium placeholder-slate-400"
+                                />
+                            </div>
                         </div>
                     </div>
-                  <div className="pt-4 flex flex-col sm:flex-row gap-4">
-                        
+
+                    {/* Actions / Buttons */}
+                    <div className="pt-6 flex flex-col-reverse sm:flex-row gap-4 border-t border-slate-100">
                         <button 
                             type="button" 
                             onClick={() => navigate('/admin/dashboard')} 
-                            className="w-full sm:w-1/3 bg-white border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700 font-bold py-4 px-6 rounded-xl transition-all duration-200 flex justify-center items-center gap-2"
+                            className="group w-full sm:w-1/3 bg-white border-2 border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 font-bold py-4 px-6 rounded-2xl transition-all duration-300 flex justify-center items-center gap-2 active:scale-95"
                         >
+                            <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" strokeWidth={2.5}/>
                             <span>Annuler</span>
                         </button>
 
                         <button 
                             type="submit" 
-                            className="w-full sm:w-2/3 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-emerald-500/30 transform hover:-translate-y-0.5 transition-all duration-200 flex justify-center items-center gap-2"
+                            className="group w-full sm:w-2/3 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white font-bold py-4 px-6 rounded-2xl shadow-xl hover:shadow-amber-500/30 transform hover:-translate-y-1 active:scale-95 transition-all duration-300 flex justify-center items-center gap-2 text-lg"
                         >
-                            <span>Ajouter l'événement</span>
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
-                            </svg>
+                            <span>Créer l'événement</span>
+                            <CheckCircle2 className="w-6 h-6 transition-transform group-hover:scale-110" strokeWidth={2.5} />
                         </button>
-
                     </div>
 
                 </form>

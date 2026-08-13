@@ -1,6 +1,17 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import { 
+    CalendarDays, 
+    MapPin, 
+    Clock, 
+    Ticket, 
+    XCircle, 
+    ArrowRight, 
+    AlertTriangle, 
+    Loader2,
+    Sparkles
+} from "lucide-react";
 
 export default function StudentDashboard() {
     const navigate = useNavigate();
@@ -8,8 +19,10 @@ export default function StudentDashboard() {
     
     const [reservations, setReservations] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
-  
     const [isLoading, setIsLoading] = useState(true);
+    
+    // --- NOUVEAU STATE: Bach n3rfo ayna event rah kayt-réserva db ---
+    const [reservingId, setReservingId] = useState(null);
 
     const getReservations = async () => {
         try {
@@ -29,16 +42,19 @@ export default function StudentDashboard() {
     const reserve = async (id) => {
         try {
             setErrorMessage("");
+            setReservingId(id); // <-- Kandeclariw bli bdina la réservation l had l'event
             await axiosInstance.post('/reserv', {
                 event_id: id
             });
-            getReservations();
+            await getReservations(); // Kantsnaw data jdida tji
         } catch (error) {
             if (error.response) {
                 setErrorMessage(error.response.data.message);
             } else {
                 setErrorMessage('Erreur sur le serveur');
             }
+        } finally {
+            setReservingId(null); // <-- Kan-saliw l-animation dyal loading kima kant natija (success ola error)
         }
     };
 
@@ -50,14 +66,17 @@ export default function StudentDashboard() {
         getReservations();
     }, []);
 
+    // --- LOADING STATE COMPLET DE LA PAGE ---
     if (isLoading) {
         return (
-            <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50">
-                <div className="relative">
-                    <div className="w-20 h-20 border-green-200 border-8 rounded-full"></div>
-                    <div className="w-20 h-20 border-green-600 border-8 rounded-full absolute top-0 left-0 border-t-transparent animate-spin"></div>
+            <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center items-center bg-slate-50 font-sans">
+                <div className="relative flex justify-center items-center mb-6">
+                    <div className="absolute w-20 h-20 bg-emerald-100 rounded-full animate-ping opacity-60"></div>
+                    <div className="relative bg-white p-4 rounded-2xl shadow-lg border border-emerald-50">
+                        <Loader2 className="w-10 h-10 text-emerald-600 animate-spin" strokeWidth={2.5} />
+                    </div>
                 </div>
-                <h2 className="mt-6 text-xl font-bold text-gray-700 animate-pulse tracking-wide">
+                <h2 className="text-xl font-bold text-gray-800 animate-pulse tracking-wide">
                     Chargement des événements...
                 </h2>
             </div>
@@ -65,104 +84,142 @@ export default function StudentDashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-12">
+        <div className="min-h-screen bg-slate-50 font-sans pb-12">
             
-             <div className="bg-gradient-to-r from-green-600 to-emerald-800 py-16 px-8 text-center shadow-lg rounded-b-[3rem] mb-10">
-                <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
-                    Bienvenue dans votre Espace
-                </h1>
-                <p className="text-green-100 text-lg max-w-2xl mx-auto font-medium">
-                    Découvrez nos prochains événements et réservez votre place en un seul clic.
-                </p>
-            </div>
-     {errorMessage && (
-                <div className="max-w-3xl mx-auto mb-8 px-4">
-                    <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg shadow-sm flex items-center">
-                        <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                        </svg>
-                        <span className="font-medium">{errorMessage}</span>
-                    </div>
+            {/* --- HERO SECTION --- */}
+            <div className="relative bg-gradient-to-br from-emerald-600 via-teal-700 to-green-900 pt-16 pb-32 px-4 sm:px-6 lg:px-8 text-center shadow-2xl rounded-b-[3rem] overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none">
+                    <div className="absolute -top-20 -left-20 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl"></div>
+                    <div className="absolute top-20 -right-20 w-96 h-96 bg-emerald-300 rounded-full mix-blend-overlay filter blur-3xl"></div>
                 </div>
-            )}
-   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div className="relative z-10 max-w-3xl mx-auto animate-fade-in-up">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white font-semibold text-sm mb-6">
+                        <Sparkles className="w-4 h-4 text-emerald-200" />
+                        <span>Votre espace étudiant</span>
+                    </div>
+                    <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
+                        Vivez vos meilleures <br className="hidden sm:block" />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-yellow-200">
+                            expériences
+                        </span>
+                    </h1>
+                    <p className="text-emerald-50 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
+                        Découvrez nos prochains événements, rejoignez vos amis et réservez votre place en un seul clic.
+                    </p>
+                </div>
+            </div>
+
+            {/* --- MAIN CONTENT --- */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 -mt-20">
+                
+                {/* Error Message */}
+                {errorMessage && (
+                    <div className="mb-8 max-w-3xl mx-auto bg-white p-1 rounded-2xl shadow-lg animate-headshake">
+                        <div className="bg-red-50 border border-red-100 text-red-700 p-4 rounded-xl flex items-start gap-3">
+                            <AlertTriangle className="w-6 h-6 shrink-0 text-red-500 mt-0.5" strokeWidth={2} />
+                            <div>
+                                <p className="font-bold text-red-800 text-sm mb-0.5">Erreur</p>
+                                <span className="font-medium text-sm">{errorMessage}</span>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Events Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {reservations.map((e) => (
-                        <div key={e.id} className="bg-white rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden group flex flex-col relative transform hover:-translate-y-1">
-                            <div className="p-6 flex-grow">
-                                <div className="flex justify-between items-start mb-5">
-                                    <h4 className="text-xl font-bold text-gray-900 leading-tight group-hover:text-green-600 transition-colors">
+                        <div key={e.id} className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 hover:shadow-emerald-500/10 transition-all duration-300 border border-slate-100 overflow-hidden flex flex-col transform hover:-translate-y-1 group">
+                            
+                            {/* Card Content */}
+                            <div className="p-6 sm:p-8 flex-grow flex flex-col">
+                                <div className="flex justify-between items-start mb-4 gap-4">
+                                    <h4 className="text-2xl font-extrabold text-slate-900 leading-tight group-hover:text-emerald-600 transition-colors line-clamp-2" title={e.titre}>
                                         {e.titre}
                                     </h4>
-                                    <span className={`inline-flex items-center justify-center px-3 py-1.5 rounded-full text-xs font-bold shadow-sm ${e.prix > 0 ? 'bg-amber-100 text-amber-800' : 'bg-green-100 text-green-800'}`}>
+                                    <span className={`shrink-0 inline-flex items-center justify-center px-3 py-1.5 rounded-xl text-xs font-bold border ${e.prix > 0 ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`}>
                                         {e.prix > 0 ? e.prix + ' DH' : 'Gratuit'}
                                     </span>
                                 </div>
                                 
-                                <p className="text-gray-600 text-sm line-clamp-2 mb-6 leading-relaxed" title={e.description}>
+                                <p className="text-slate-500 text-sm line-clamp-2 mb-6 leading-relaxed" title={e.description}>
                                     {e.description}
                                 </p>
 
-                                <div className="space-y-4 text-sm font-medium text-gray-700 bg-gray-50 p-4 rounded-2xl">
+                                <div className="mt-auto space-y-3 text-sm font-semibold text-slate-700 bg-slate-50/80 p-5 rounded-2xl border border-slate-100">
                                     <div className="flex items-center gap-3">
-                                        <div className="bg-white p-2 rounded-xl text-green-600 shadow-sm">
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                            </svg>
+                                        <div className="bg-white p-2 rounded-xl text-emerald-500 shadow-sm border border-slate-100 shrink-0">
+                                            <CalendarDays className="w-4.5 h-4.5" strokeWidth={2} />
                                         </div>
-                                        <span>{e.date} à {e.heure}</span>
+                                        <span className="truncate">{e.date} <span className="text-slate-400 font-normal mx-1">à</span> {e.heure}</span>
                                     </div>
-                                    
                                     <div className="flex items-center gap-3">
-                                        <div className="bg-white p-2 rounded-xl text-green-600 shadow-sm">
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            </svg>
+                                        <div className="bg-white p-2 rounded-xl text-emerald-500 shadow-sm border border-slate-100 shrink-0">
+                                            <MapPin className="w-4.5 h-4.5" strokeWidth={2} />
                                         </div>
-                                        <span>{e.lieu}</span>
+                                        <span className="truncate" title={e.lieu}>{e.lieu}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="p-6 pt-0 mt-auto">
-                                  {e.event_id === e.id && e.reserveBy === user?.id ? (
+                            {/* Card Footer (Action Buttons) */}
+                            <div className="p-6 pt-0">
+                                {e.event_id === e.id && e.reserveBy === user?.id ? (
                                     <button 
                                         type="button"
                                         onClick={() => toTickets()} 
-                                        className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition-all duration-300 flex items-center justify-center gap-2 transform hover:scale-[1.02]"
+                                        className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold py-4 px-4 rounded-2xl shadow-lg hover:shadow-emerald-500/30 transition-all duration-300 flex items-center justify-center gap-2 transform active:scale-95"
                                     >
+                                        <Ticket className="w-5 h-5" strokeWidth={2.5} />
                                         <span>Voir mon ticket</span>
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path>
-                                        </svg>
                                     </button>
                                 ) : e.jauge_maximale <= 0 ? (
                                     <button 
                                         type="button" 
                                         disabled
-                                        className="w-full bg-gray-100 text-gray-400 border border-gray-200 font-bold py-3.5 px-4 rounded-xl cursor-not-allowed flex items-center justify-center gap-2"
+                                        className="w-full bg-slate-100 text-slate-400 border-2 border-slate-200 font-bold py-4 px-4 rounded-2xl cursor-not-allowed flex items-center justify-center gap-2"
                                     >
-                                        <span>Événement complet</span>
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                                        </svg>
+                                        <XCircle className="w-5 h-5" strokeWidth={2.5} />
+                                        <span>Complet</span>
                                     </button>
                                 ) : (
+                                    // --- BOUTON DE RÉSERVATION MÀJ AVEC LOADER ---
                                     <button 
                                         type="button"
                                         onClick={() => reserve(e.id)} 
-                                        className="w-full bg-green-50 text-green-700 border border-green-200 hover:bg-green-600 hover:text-white hover:border-green-600 font-bold py-3.5 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 transform hover:scale-[1.02]"
+                                        disabled={reservingId === e.id}
+                                        className={`group w-full font-bold py-4 px-4 rounded-2xl shadow-lg transition-all duration-300 flex items-center justify-center gap-2 transform active:scale-95 ${
+                                            reservingId === e.id 
+                                            ? 'bg-emerald-600/70 text-white cursor-wait shadow-none' // Style en cours de chargement
+                                            : 'bg-slate-900 text-white hover:bg-emerald-600 hover:shadow-emerald-500/30' // Style normal
+                                        }`}
                                     >
-                                        <span>Réserver ma place</span>
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                                        </svg>
+                                        {reservingId === e.id ? (
+                                            <>
+                                                <Loader2 className="w-5 h-5 animate-spin" strokeWidth={2.5} />
+                                                <span>Réservation...</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span>Réserver ma place</span>
+                                                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" strokeWidth={2.5} />
+                                            </>
+                                        )}
                                     </button>
                                 )}
                             </div>
                         </div>
                     ))}
+
+                    {reservations.length === 0 && !isLoading && (
+                        <div className="col-span-full bg-white rounded-[2rem] p-12 text-center shadow-lg border border-slate-100">
+                            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-100">
+                                <CalendarDays className="w-10 h-10 text-slate-400" strokeWidth={1.5} />
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-2">Aucun événement à venir</h3>
+                            <p className="text-slate-500">Revenez plus tard pour découvrir nos prochains événements.</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

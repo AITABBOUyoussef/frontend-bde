@@ -1,18 +1,35 @@
 import { useState, useEffect } from "react"; 
 import { Link } from 'react-router-dom';
 import axiosInstance from "../api/axios";
+import { 
+    ShieldCheck, 
+    PlusCircle, 
+    AlertTriangle, 
+    CalendarCheck, 
+    CalendarDays, 
+    Clock, 
+    MapPin, 
+    Users, 
+    Inbox,
+    Loader2,
+    Eye,
+    X,
+    AlignLeft,
+    Ticket
+} from "lucide-react";
 
 export default function AdminDashboard() {
     const [events, setEvents] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
-   
     const [isLoading, setIsLoading] = useState(true);
+    
+    // --- NOUVEAU STATE POUR LE MODAL ---
+    const [selectedEvent, setSelectedEvent] = useState(null);
 
-        useEffect(() => {
+    useEffect(() => {
         const getevents = async () => {
             try {
                  setIsLoading(true);
-                
                 const result = await axiosInstance.get('/events');
                 setEvents(result.data.data); 
             } catch (error) {
@@ -25,125 +42,175 @@ export default function AdminDashboard() {
                 setIsLoading(false);
             }
         };
-
         getevents();
     }, []);
 
+    // --- LOADING STATE ---
     if (isLoading) {
         return (
-            <div className="min-h-screen flex flex-col justify-center items-center bg-slate-50">
-                <div className="relative flex justify-center items-center">
-                    <div className="w-24 h-24 border-red-200 border-[6px] border-dashed rounded-full animate-[spin_3s_linear_infinite]"></div>
-                    <div className="w-24 h-24 border-red-600 border-[6px] rounded-full absolute top-0 left-0 border-t-transparent animate-spin"></div>
-                    <span className="absolute text-red-600 text-3xl">⚙️</span>
+            <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center items-center bg-slate-50/50 font-sans">
+                <div className="relative flex justify-center items-center mb-6">
+                    <div className="absolute w-20 h-20 bg-amber-100 rounded-full animate-ping opacity-60"></div>
+                    <div className="relative bg-white p-4 rounded-2xl shadow-lg border border-amber-50">
+                        <Loader2 className="w-10 h-10 text-amber-500 animate-spin" strokeWidth={2.5} />
+                    </div>
                 </div>
-                <h2 className="mt-8 text-xl font-bold text-gray-700 animate-pulse tracking-wide">
-                    Chargement du tableau de bord...
+                <h2 className="text-xl font-bold text-gray-800 animate-pulse tracking-wide">
+                    Chargement de l'espace admin...
                 </h2>
             </div>
         );
     }
-  return (
-        <div className="min-h-screen bg-slate-50 py-10 font-sans">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex flex-col md:flex-row justify-between items-center bg-white p-6 rounded-3xl shadow-sm border border-gray-100 mb-8 gap-4">
-                    <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center shadow-inner">
-                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                            </svg>
+
+    return (
+        <div className="min-h-screen bg-slate-50/50 py-10 font-sans relative overflow-hidden">
+            
+            {/* Background Blob */}
+            <div className="absolute top-[-10%] right-[-5%] w-96 h-96 bg-amber-100 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse pointer-events-none z-0" style={{ animationDuration: '12s' }}></div>
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 animate-fade-in-up">
+                
+                {/* --- HEADER --- */}
+                <div className="flex flex-col md:flex-row justify-between items-center bg-white/80 backdrop-blur-xl p-6 md:p-8 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-white mb-8 gap-6 transition-all">
+                    
+                    <div className="flex items-center gap-5">
+                        <div className="w-16 h-16 bg-slate-900 text-amber-400 rounded-2xl flex items-center justify-center shadow-inner transform transition-transform hover:scale-105 duration-300">
+                            <ShieldCheck className="w-8 h-8" strokeWidth={2} />
                         </div>
                         <div>
-                            <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Espace Administrateur</h1>
-                            <p className="text-sm text-gray-500 font-medium">Gérez tous les événements de la plateforme</p>
+                            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-1">
+                                Espace Administrateur
+                            </h1>
+                            <p className="text-sm text-slate-500 font-medium">
+                                Gérez et supervisez tous les événements de la plateforme.
+                            </p>
                         </div>
                     </div>
+                    
                     <Link 
                         to="/admin/addevents" 
-                        className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-md hover:shadow-red-500/30 transition-all duration-300 flex items-center gap-2 transform hover:-translate-y-0.5"
+                        className="group w-full md:w-auto bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white font-bold py-3.5 px-7 rounded-2xl shadow-lg hover:shadow-amber-500/30 transition-all duration-300 flex items-center justify-center gap-3 transform hover:-translate-y-1 active:scale-95"
                     >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
-                        </svg>
+                        <PlusCircle className="w-5 h-5 transition-transform group-hover:rotate-90 duration-300" strokeWidth={2.5} />
                         <span>Créer un événement</span>
                     </Link>
                 </div>
-          {errorMessage && (
-                    <div className="mb-8 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl shadow-sm flex items-start">
-                        <svg className="w-5 h-5 text-red-500 mt-0.5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span className="text-red-700 font-medium">{errorMessage}</span>
+
+                {/* --- ERROR MESSAGE --- */}
+                {errorMessage && (
+                    <div className="mb-8 bg-red-50 border border-red-100 p-5 rounded-2xl shadow-sm flex items-start gap-4 animate-headshake">
+                        <AlertTriangle className="w-6 h-6 text-red-500 mt-0.5 shrink-0" strokeWidth={2} />
+                        <div>
+                            <p className="font-bold text-red-800 text-sm mb-0.5">Erreur</p>
+                            <span className="text-red-700 font-medium text-sm">{errorMessage}</span>
+                        </div>
                     </div>
                 )}
 
-              <div className="bg-white rounded-[2rem] shadow-md border border-gray-100 overflow-hidden">
+                {/* --- DATA TABLE --- */}
+                <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/40 border border-slate-100 overflow-hidden">
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                             <thead className="bg-gray-50">
+                        <table className="min-w-full divide-y divide-slate-100">
+                            
+                            <thead className="bg-slate-50/80">
                                 <tr>
-                                    <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                        Événement & Prix
+                                    <th scope="col" className="px-6 py-5 text-left text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                                        Événement & Détails
                                     </th>
-                                    <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                    <th scope="col" className="px-6 py-5 text-left text-xs font-extrabold text-slate-500 uppercase tracking-wider">
                                         Date & Lieu
                                     </th>
-                                    <th scope="col" className="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                    <th scope="col" className="px-6 py-5 text-center text-xs font-extrabold text-slate-500 uppercase tracking-wider">
                                         Capacité
+                                    </th>
+                                    <th scope="col" className="px-6 py-5 text-right text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                                        Actions
                                     </th>
                                 </tr>
                             </thead>
                           
-                           <tbody className="bg-white divide-y divide-gray-100">
+                            <tbody className="bg-white divide-y divide-slate-50">
                                 {events.length > 0 ? (
                                     events.map((e) => (
-                                        <tr key={e.id} className="hover:bg-slate-50 transition-colors duration-200">
+                                        <tr key={e.id} className="hover:bg-slate-50/80 transition-colors duration-200 group">
+                                            
+                                            {/* Column 1: Event & Price */}
                                             <td className="px-6 py-5 whitespace-nowrap">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
-                                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                                        </svg>
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-12 h-12 rounded-2xl bg-slate-100 group-hover:bg-slate-900 group-hover:text-amber-400 transition-colors flex items-center justify-center text-slate-500 border border-slate-200 group-hover:border-slate-800 shrink-0">
+                                                        <CalendarCheck className="w-6 h-6" strokeWidth={1.5} />
                                                     </div>
-                                                    <div>
-                                                        <div className="text-base font-bold text-gray-900">{e.titre}</div>
-                                                        <div className={`text-sm font-bold mt-1 ${e.prix > 0 ? 'text-amber-600' : 'text-emerald-600'}`}>
-                                                            {e.prix > 0 ? `${e.prix} DH` : 'Gratuit'}
+                                                    <div className="flex flex-col max-w-[180px] sm:max-w-xs">
+                                                        <div className="text-base font-bold text-slate-900 mb-1 truncate" title={e.titre}>
+                                                            {e.titre}
+                                                        </div>
+                                                        <div className="flex">
+                                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border ${e.prix > 0 ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`}>
+                                                                {e.prix > 0 ? `${e.prix} DH` : 'Gratuit'}
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>
-                                              <td className="px-6 py-5 whitespace-nowrap">
-                                                <div className="text-sm font-bold text-gray-900 mb-1">
-                                                    {e.date} à {e.heure}
-                                                </div>
-                                                <div className="text-sm text-gray-500 flex items-center gap-1.5">
-                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                    </svg>
-                                                    {e.lieu}
+                                              
+                                            {/* Column 2: Date & Location */}
+                                            <td className="px-6 py-5 whitespace-nowrap">
+                                                <div className="flex flex-col gap-2 max-w-[150px] sm:max-w-[200px]">
+                                                    <div className="flex items-center gap-2 text-sm font-bold text-slate-800 truncate">
+                                                        <CalendarDays className="w-4 h-4 text-slate-400 shrink-0" strokeWidth={2} />
+                                                        <span className="truncate">{e.date}</span>
+                                                        <span className="text-slate-300 mx-1 shrink-0">|</span>
+                                                        <Clock className="w-4 h-4 text-slate-400 shrink-0" strokeWidth={2} />
+                                                        <span className="truncate">{e.heure}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2 text-sm text-slate-500 font-medium truncate" title={e.lieu}>
+                                                        <MapPin className="w-4 h-4 text-slate-400 shrink-0" strokeWidth={2} />
+                                                        <span className="truncate">{e.lieu}</span>
+                                                    </div>
                                                 </div>
                                             </td>
-                                             <td className="px-6 py-5 whitespace-nowrap text-center">
-                                                <span className="px-4 py-2 inline-flex items-center gap-1.5 text-xs leading-5 font-bold rounded-full bg-blue-50 text-blue-700 border border-blue-100">
-                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                                                    </svg>
-                                                    Places Max : {e.jauge_maximale}
+                                             
+                                            {/* Column 3: Capacity */}
+                                            <td className="px-6 py-5 whitespace-nowrap text-center">
+                                                <span className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-2xl bg-slate-100 text-slate-700 border border-slate-200 shadow-sm">
+                                                    <Users className="w-4 h-4" strokeWidth={2} />
+                                                    {e.jauge_maximale} Places
                                                 </span>
                                             </td>
+
+                                            {/* Column 4: Actions (View More BUTTON NOW) */}
+                                            <td className="px-6 py-5 whitespace-nowrap text-right">
+                                                <button 
+                                                    onClick={() => setSelectedEvent(e)}
+                                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-slate-700 hover:bg-slate-900 hover:text-amber-400 border border-slate-200 hover:border-slate-900 shadow-sm transition-all duration-300 font-semibold text-sm"
+                                                    title="Voir les détails"
+                                                >
+                                                    <Eye className="w-4 h-4" strokeWidth={2} />
+                                                    <span className="hidden sm:inline">Détails</span>
+                                                </button>
+                                            </td>
+                                            
                                         </tr>
                                     ))
                                 ) : (
-                                       <tr>
-                                        <td colSpan="3" className="px-6 py-12 text-center text-gray-500">
-                                            <div className="flex flex-col items-center justify-center">
-                                                <svg className="w-12 h-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
-                                                </svg>
-                                                <p className="text-lg font-medium text-gray-900">Aucun événement</p>
-                                                <p className="text-sm">Il n'y a pas d'événements à afficher pour le moment.</p>
+                                    /* --- EMPTY STATE --- */
+                                    <tr>
+                                        <td colSpan="4" className="px-6 py-16 text-center">
+                                            <div className="flex flex-col items-center justify-center animate-fade-in-up">
+                                                <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4 border border-slate-100">
+                                                    <Inbox className="w-10 h-10 text-slate-400" strokeWidth={1.5} />
+                                                </div>
+                                                <p className="text-xl font-bold text-slate-900 mb-1">Aucun événement</p>
+                                                <p className="text-sm text-slate-500 max-w-sm mx-auto">
+                                                    Votre tableau de bord est vide. Créez votre premier événement pour commencer.
+                                                </p>
+                                                <Link 
+                                                    to="/admin/addevents" 
+                                                    className="mt-6 text-sm font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1 group"
+                                                >
+                                                    <PlusCircle className="w-4 h-4" />
+                                                    Créer maintenant
+                                                </Link>
                                             </div>
                                         </td>
                                     </tr>
@@ -154,6 +221,106 @@ export default function AdminDashboard() {
                 </div>
                 
             </div>
+
+            {/* --- EVENT DETAILS MODAL (POPUP) --- */}
+            {selectedEvent && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+                    {/* Modal Content - fade-in-up animation */}
+                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-fade-in-up border border-slate-100 flex flex-col">
+                        
+                        {/* Modal Header */}
+                        <div className="sticky top-0 bg-white/95 backdrop-blur z-10 px-6 py-4 border-b border-slate-100 flex justify-between items-start gap-4">
+                            <div>
+                                <h3 className="text-2xl font-extrabold text-slate-900 pr-4">
+                                    {selectedEvent.titre}
+                                </h3>
+                                <div className="mt-2 inline-flex items-center px-3 py-1 rounded-full text-sm font-bold border bg-amber-50 text-amber-700 border-amber-200">
+                                    {selectedEvent.prix > 0 ? `${selectedEvent.prix} DH` : 'Événement Gratuit'}
+                                </div>
+                            </div>
+                            <button 
+                                onClick={() => setSelectedEvent(null)} 
+                                className="p-2 bg-slate-100 hover:bg-red-100 rounded-full text-slate-500 hover:text-red-600 transition-colors shrink-0"
+                            >
+                                <X className="w-6 h-6" />
+                            </button>
+                        </div>
+
+                        {/* Modal Body */}
+                        <div className="p-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                                
+                                {/* Info blocks */}
+                                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex items-start gap-3">
+                                    <div className="bg-white p-2 rounded-xl shadow-sm text-amber-500 shrink-0">
+                                        <CalendarDays className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase mb-1">Date & Heure</p>
+                                        <p className="font-bold text-slate-800">{selectedEvent.date}</p>
+                                        <p className="text-sm text-slate-500">{selectedEvent.heure}</p>
+                                    </div>
+                                </div>
+
+                                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex items-start gap-3">
+                                    <div className="bg-white p-2 rounded-xl shadow-sm text-amber-500 shrink-0">
+                                        <MapPin className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase mb-1">Lieu</p>
+                                        <p className="font-bold text-slate-800">{selectedEvent.lieu}</p>
+                                    </div>
+                                </div>
+
+                                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex items-start gap-3">
+                                    <div className="bg-white p-2 rounded-xl shadow-sm text-amber-500 shrink-0">
+                                        <Users className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase mb-1">Capacité Max</p>
+                                        <p className="font-bold text-slate-800">{selectedEvent.jauge_maximale} Places</p>
+                                    </div>
+                                </div>
+
+                                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex items-start gap-3">
+                                    <div className="bg-white p-2 rounded-xl shadow-sm text-amber-500 shrink-0">
+                                        <Ticket className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase mb-1">ID Événement</p>
+                                        <p className="font-mono text-sm font-bold text-slate-800">#{selectedEvent.id}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Description Section (ila kanet kayna f l'API, sinnon 7itha wla khliha) */}
+                            {selectedEvent.description && (
+                                <div className="mt-2">
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <AlignLeft className="w-5 h-5 text-slate-400" />
+                                        <h4 className="font-bold text-slate-800 text-lg">Description</h4>
+                                    </div>
+                                    <p className="text-slate-600 leading-relaxed bg-white border border-slate-100 p-5 rounded-2xl shadow-sm">
+                                        {selectedEvent.description}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                        
+                        {/* Modal Footer */}
+                        <div className="p-6 border-t border-slate-100 bg-slate-50/50 mt-auto rounded-b-3xl flex justify-end">
+                            <button 
+                                onClick={() => setSelectedEvent(null)}
+                                className="px-6 py-2.5 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-colors shadow-lg hover:shadow-slate-900/20"
+                            >
+                                Fermer
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }
