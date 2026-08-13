@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: 'https://bde-events-api-v5.onrender.com/api',
+    baseURL: 'https://bde-events-api-v6-1.onrender.com/api',
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
